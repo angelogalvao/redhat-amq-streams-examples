@@ -92,7 +92,7 @@ sasl.login.callback.handler.class=io.strimzi.kafka.oauth.client.JaasClientOauthL
 * Use the Pod definition on file `kafka-client-shell.yaml` to run the clients. First, start the pod:
 
     oc apply -f kafka-client-shell.yaml
-* Copy the configuration files to pod `/tmp` folder.:
+* Copy the configuration files to `/tmp` pod folder.:
 
     oc cp team-a-client.properties kafka-client-shell:/tmp
     oc cp team-b-client.properties kafka-client-shell:/tmp

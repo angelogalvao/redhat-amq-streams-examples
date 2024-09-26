@@ -31,9 +31,10 @@
 * Import the file kafka-authz-realm.json to a new realm by clicking in the Add realm button.
 * Create the oauth-server-cert secret, this secret will be used by Kafka to properly connect to Keycloak:
     * First, get the tls.crt out of the secret sso-x509-https-secret
-```bash
+    ```bash
     oc get secret sso-x509-https-secret -o yaml | grep tls.crt | awk '{print $2}' | base64 --decode > sso.pem
-```
+    ```
+    
     * **Don't forget** that only the top CA is required in the certificate chain, so manually edit the sso.pem, leave only the bottom certificate and save it as sso.crt.
     * Create the oauth-server-cert secret:
 ```bash

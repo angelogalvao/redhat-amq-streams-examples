@@ -1,0 +1,43 @@
+kind: KafkaMirrorMaker2
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: kafka-mm2-cluster
+  namespace: strimzi-mm-example-target
+spec:
+  version: 3.8.0
+  replicas: 2
+  connectCluster: cluster-target
+  clusters:
+    - alias: cluster-source
+      bootstrapServers: 'kafka-cluster-kafka-bootstrap.strimzi-mm-example-source.svc:9092'
+    - alias: cluster-target
+      bootstrapServers: 'kafka-cluster-kafka-bootstrap.strimzi-mm-example-target.svc:9092'
+      config:
+        config.storage.replication.factor: -1
+        offset.storage.replication.factor: -1
+        status.storage.replication.factor: -1
+  mirrors:
+    - sourceCluster: cluster-source
+      targetCluster: cluster-target
+      sourceConnector:
+        tasksMax: 10
+        autoRestart:
+          enabled: true
+        config:
+          replication.factor: -1
+          offset-syncs.topic.replication.factor: -1
+          sync.topic.acls.enabled: 'false'
+          replication.policy.class: io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy
+          replication.policy.separator: ''
+      checkpointConnector:
+        autoRestart:
+          enabled: true
+        config:
+          checkpoints.topic.replication.factor: -1
+          replication.policy.class: io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy
+          replication.policy.separator: ''
+          sync.group.offsets.enabled: true
+          sync.group.offsets.interval.seconds: 10
+          refresh.groups.interval.seconds: 10
+      topicsPattern: .*.topic
+      groupsPattern: .*

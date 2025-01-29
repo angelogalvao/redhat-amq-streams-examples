@@ -28,14 +28,12 @@ spec:
           offset-syncs.topic.replication.factor: -1
           sync.topic.acls.enabled: 'false'
           replication.policy.class: io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy
-          replication.policy.separator: ''
       checkpointConnector:
         autoRestart:
           enabled: true
         config:
           checkpoints.topic.replication.factor: -1
           replication.policy.class: io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy
-          replication.policy.separator: ''
           sync.group.offsets.enabled: true
           sync.group.offsets.interval.seconds: 10
           refresh.groups.interval.seconds: 10

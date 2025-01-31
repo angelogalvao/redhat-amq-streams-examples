@@ -83,8 +83,27 @@ bin/kafka-consumer-groups.sh --describe --bootstrap-server localhost:9092  --gro
 bin/kafka-consumer-groups.sh --delete --bootstrap-server localhost:9092  --group <name>
 ```
 
-4. Monitore details of the consumer group 
+6. Monitore details of the consumer group 
 ```sh 
 watch oc exec -n strimzi-mm-example-target kafka-cluster-kafka-0 -- bin/kafka-consumer-groups.sh --describe --bootstrap-server localhost:9092  --group <name>
 ```
 
+7. Create a topic
+```sh 
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic test.replication.1.topic --create --partitions 1 --replication-factor 1
+```
+
+8. Produce 100 messages to the topic 
+```sh 
+bin/kafka-producer-perf-test.sh --topic test.replication.1.topic --throughput 1 --num-records 100 --record-size 64 --producer-props acks=1  --print-metrics --producer-props bootstrap.servers=localhost:9092
+```
+
+9. Consume 10 messages to the topic
+```sh 
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.replication.1.topic --group group.1 --from-beginning --max-messages 10
+```
+
+9. Consume 10 more messages
+```sh 
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.replication.1.topic --group group.1  --max-messages 10
+```

@@ -24,18 +24,22 @@ spec:
         autoRestart:
           enabled: true
         config:
-          replication.factor: -1
-          offset-syncs.topic.replication.factor: -1
+          replication.factor: 1
+          offset-syncs.topic.replication.factor: 1
           sync.topic.acls.enabled: 'false'
           replication.policy.class: io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy
+      heartbeatConnector:
+        config:
+          heartbeats.topic.replication.factor: 1
       checkpointConnector:
         autoRestart:
           enabled: true
         config:
-          checkpoints.topic.replication.factor: -1
+          checkpoints.topic.replication.factor: 1
           replication.policy.class: io.strimzi.kafka.connect.mirror.IdentityReplicationPolicy
           sync.group.offsets.enabled: true
           sync.group.offsets.interval.seconds: 10
           refresh.groups.interval.seconds: 10
+          refresh.topics.interval.seconds: 10
       topicsPattern: .*.topic
       groupsPattern: .*
